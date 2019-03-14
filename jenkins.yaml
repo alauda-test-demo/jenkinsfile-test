@@ -1,0 +1,118 @@
+plugins:
+  sites:
+  - id: "default"
+    url: "https://updates.jenkins.io/update-center.json"
+jenkins:
+  agentProtocols:
+  - "JNLP2-connect"
+  - "JNLP3-connect"
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  clouds:
+  - kubernetes:
+      containerCapStr: "10"
+      jenkinsTunnel: "10.100.10.79:50000"
+      jenkinsUrl: "http://10.100.10.79:8080/"
+      labels: "{jenkins=slave}"
+      maxRequestsPerHostStr: "32"
+      name: "kubernetes"
+      templates:
+      - containers:
+        - args: "${computer.jnlpmac} ${computer.name}"
+          image: "index.alauda.cn/alaudaorg/jenkins-node-all-alpine:e9326232a5f25aa323c610d8895d55de961fe6ed"
+          livenessProbe:
+            failureThreshold: 0
+            initialDelaySeconds: 0
+            periodSeconds: 0
+            successThreshold: 0
+            timeoutSeconds: 0
+          name: "jnlp"
+        label: "all node master golang"
+        name: "all"
+        namespace: "default-1"
+        nodeUsageMode: "NORMAL"
+        volumes:
+        - hostPathVolume:
+            hostPath: "/var/run/docker.sock"
+            mountPath: "/var/run/docker.sock"
+        workspaceVolume:
+          emptyDirWorkspaceVolume:
+            memory: false
+      - name: "java"
+        label: "java"
+        containers:
+          - name: "java"
+            image: "index.alauda.cn/alaudaorg/jenkins-node-java:latest"
+            workingDir: "/home/jenkins"
+            command: "/bin/sh -c"
+            args: "cat"
+            ttyEnabled: true
+          - name: "tools"
+            image: "index.alauda.cn/alaudaorg/jenkins-node-java:latest"
+            workingDir: "/home/jenkins"
+            command: "/bin/sh -c"
+            args: "cat"
+            ttyEnabled: true
+        volumes:
+          - hostPathVolume:
+              hostPath: "/var/run/docker.sock"
+              mountPath: "/var/run/docker.sock"
+          - hostPathVolume:
+              hostPath: "/Users/mac/.m2/repository/"
+              mountPath: "/data/.m2/"
+        idleMinutes: "30"
+      - name: "golang"
+        label: "golang"
+        containers:
+          - name: "golang"
+            image: "index.alauda.cn/alaudaorg/jenkins-node-golang:latest"
+            workingDir: "/home/jenkins"
+            command: "/bin/sh -c"
+            args: "cat"
+            ttyEnabled: true
+          - name: "tools"
+            image: "index.alauda.cn/alaudaorg/jenkins-node-java:latest"
+            workingDir: "/home/jenkins"
+            command: "/bin/sh -c"
+            args: "cat"
+            ttyEnabled: true
+        volumes:
+          - hostPathVolume:
+              hostPath: "/var/run/docker.sock"
+              mountPath: "/var/run/docker.sock"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: false
+  labelString: "master"
+  mode: NORMAL
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  quietPeriod: 5
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "admin"
+  slaveAgentPort: 50000
+  views:
+  - all:
+      name: "all"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  jdk:
+    defaultProperties:
+    - installSource:
+        installers:
+        - jdkInstaller:
+            acceptLicense: false

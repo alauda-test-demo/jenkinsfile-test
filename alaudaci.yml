@@ -1,0 +1,8 @@
+pre_ci_boot:
+    image: index.alauda.cn/alaudaorg/qaimages
+    tag: svn
+
+ci:
+    - echo "<h1>hello logloglogLOglogiiiiiiiaddda!</h1>" > aayml.txt
+    - cp -r aayml.txt $ALAUDACI_UPLOAD_DIR
+    - sleep 1

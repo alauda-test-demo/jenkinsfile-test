@@ -1,0 +1,87 @@
+pipeline {
+  agent {
+    label 'golang'
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+	      echo "测试1111"
+      }
+    }
+    stage('CI') {
+      parallel {
+        stage('Build') {
+          steps {
+            echo "CI Build...CI Build...CI Build...CI Build...CI Build...CI Build...CI Build11..." 
+          }
+        }
+        stage('Test1') {
+          steps {
+            echo "CI Test1...CI Test1...CI Test1...CI Test1...CI Test1...CI Test1..."  
+          }
+        }
+        stage('Test2') {
+          steps {
+            echo "CI Test2..."  
+            echo "CI Test2...LLLLLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRLLLLLL"   
+          }
+        }
+        stage('Test3') {
+          steps {
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+          }
+        }
+      }
+    }
+    stage('CI1') {
+      parallel {
+        stage('Build1') {
+          steps {
+            echo "CI Build...CI Build...CI Build...CI Build...CI Build...CI Build...CI Build..." 
+          }
+        }
+        stage('Test1') {
+          steps {
+            echo "CI Test1...CI Test1...CI Test1...CI Test1...CI Test1...CI Test1..."  
+            echo "CI Test1...LLLLLLLLLLL"  
+          }
+        }
+        stage('Test2') {
+          steps {
+            echo "CI Test2..."  
+            echo "CI Test2...RRRRRRRRRRRR"  
+            echo "CI Test2...RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR"  
+            echo "CI Test2...LLLLLRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRLLLLLL"   
+          }
+        }
+        stage('Test3') {
+          steps {
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+            echo "CI Test3..."  
+          }
+        }
+      }
+    }
+    stage('Deploy1') {
+      steps {
+        echo "Deploy1..."
+        echo "Deploy1...Deploy1...Deploy1..."
+        echo "Deploy1...Deploy1...Deploy1..."
+      }
+    }
+    stage('Deploy2') {
+      steps {
+        echo "Deploy2..."
+      }
+    }
+  }
+}
